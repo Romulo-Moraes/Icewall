@@ -22,13 +22,6 @@
 #define TEST_MATCH 1
 #define TEST_MISMATCH 0
 
-#define MAGIC_BYTE 'R'
-
-#define _IOCTL_ADD_INC_RULE _IOC(_IOC_WRITE, MAGIC_BYTE, 1, sizeof(struct rule_description))
-#define _IOCTL_ADD_OUT_RULE _IOC(_IOC_WRITE, MAGIC_BYTE, 2, sizeof(struct rule_description))
-#define _IOCTL_SET_INC_POLICY _IOC(_IOC_WRITE, MAGIC_BYTE, 3, sizeof(uint8_t))
-#define _IOCTL_SET_OUT_POLICY _IOC(_IOC_WRITE, MAGIC_BYTE, 4, sizeof(uint8_t))
-
 typedef unsigned char rule_type;
 typedef uint16_t port_value;
 typedef uint32_t ip_addr; // little-endian order
