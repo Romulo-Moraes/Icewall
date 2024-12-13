@@ -11,6 +11,8 @@ long unlocked_ioctl(struct file* file, unsigned int cmd, unsigned long args) {
             break;
         case _IOCTL_SET_OUT_POLICY:
             break;
+        default:
+            return -ENOTTY;
     }
 }
 

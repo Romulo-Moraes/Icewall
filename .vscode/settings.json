@@ -7,6 +7,8 @@
         "fs.h": "c",
         "chrdev.h": "c",
         "kernel.h": "c",
-        "netfilter.h": "c"
+        "netfilter.h": "c",
+        "rules.h": "c",
+        "icewall-ctrl.h": "c"
     }
 }
