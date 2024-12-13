@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "defines": [
+                "__GNUC__",
+                "__KERNEL__"
+            ],
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/src/linux/**",
+                "/lib/modules/build/**",
+                "/usr/include",
+                "/usr/src/linux",
+                "/usr/src/linux/include",
+                "/usr/lib/gcc/x86_64-linux-gnu/14.2.1/include"
+            ],
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17"
+        }
+    ],
+    "version": 4
+}

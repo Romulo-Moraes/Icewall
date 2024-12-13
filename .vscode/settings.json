@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "firewall-rules.h": "c",
+        "net-hook.h": "c",
+        "module.h": "c",
+        "unlocked-ioctl.h": "c",
+        "fs.h": "c",
+        "chrdev.h": "c",
+        "kernel.h": "c",
+        "netfilter.h": "c"
+    }
+}
