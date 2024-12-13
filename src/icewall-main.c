@@ -23,5 +23,4 @@ static void __exit exit_procedure(void) {
 module_init(entry_procedure);
 module_exit(exit_procedure);
 
-
 MODULE_LICENSE("GPL");
