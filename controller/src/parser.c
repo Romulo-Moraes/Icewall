@@ -11,9 +11,9 @@
 static struct rule_description desc;
 static struct rule_description drop;
 static struct drop_accept_cmd drop_accept;
-static struct default_cmd;
-static struct rm_cmd;
-static struct list_cmd;
+static struct default_cmd dft_cmd;
+static struct rm_cmd rm;
+static struct list_cmd list;
 
 static parse_status parse_token(char *token, struct rule_description *rule, struct parse_flags *flags);
 static parse_status parse_port(char *token, struct rule_description *rule);
@@ -22,12 +22,20 @@ static parse_status parse_proto(char *token, struct rule_description *rule);
 static uint8_t tokenize_rule(char *rule, char *tokens[3]);
 static direction translate_direction(char *direction);
 
-struct drop_accept_cmd* parse_drop_cmd(int argc, char *argv[]) {
+struct drop_accept_cmd* parse_drop_accept_cmd(int argc, char *argv[], unsigned char type) {
     char *tokens[3];
     uint8_t tkns_count;
     struct parse_flags flags = {.addr_parsed = false, .addr_parsed = false, .p_parsed = false};
 
-    drop_accept.rule.act = POLICY_DROP;
+    if (argc != 4) {
+        return NULL;
+    }
+
+    drop_accept.rule.ip_rule = NO_ADDR_RULE;
+    drop_accept.rule.p_rule = NO_P_RULE;
+    drop_accept.rule.proto_rule = NO_PROTO_RULE;
+
+    drop_accept.rule.act = (type == DROP ? POLICY_DROP : POLICY_ACCEPT);
     drop_accept.dir = translate_direction(argv[2]);
 
     if (drop_accept.dir == UNDEF_DIR) {
@@ -49,20 +57,60 @@ struct drop_accept_cmd* parse_drop_cmd(int argc, char *argv[]) {
     return &drop_accept;
 }
 
-struct drop_accept_cmd* parse_accept_cmd(int argc, char *argv[]) {
-
-}
-
 struct default_cmd* parse_default_cmd(int argc, char *argv[]) {
+    if (argc != 4) {
+        return NULL;
+    }
 
+    dft_cmd.dir = translate_direction(argv[2]);
+
+    if (dft_cmd.dir == UNDEF_DIR) {
+        return NULL;
+    }
+    
+    if (strcmp(argv[3], "policy") != 0) {
+        return NULL;
+    }
+
+    if (strcmp(argv[4], "accept") == 0) {
+        dft_cmd.policy = POLICY_ACCEPT;
+    } else if(strcmp(argv[4], "drop") == 0) {
+        dft_cmd.policy = POLICY_DROP;
+    } else {
+        return NULL;
+    }
+
+    return &dft_cmd;
 }
 
 struct rm_cmd* parse_rm_cmd(int argc, char *argv[]) {
+    unsigned long n;
 
+    if (argc != 3) {
+        return NULL;
+    }
+
+    int matches = sscanf(argv[2], "%d%n", &rm.id, &n);
+
+    if (matches != 2 || argv[2][n] != '\0') {
+        return NULL;
+    }
+
+    return &rm;
 }
 
 struct list_cmd* parse_list_cmd(int argc, char *argv[]) {
+    if (argc != 3) {
+        return NULL;
+    }
 
+    list.dir = translate_direction(argv[2]);
+
+    if (list.dir == UNDEF_DIR) {
+        return NULL;
+    }
+
+    return &list;
 }
 
 static parse_status parse_port(char *token, struct rule_description *rule) {
