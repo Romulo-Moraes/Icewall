@@ -1,7 +1,6 @@
 #include <stdint.h>
-#include <stdio.h>
-#include <sys/ioctl.h>
-#include <arpa/inet.h>  
+#include <linux/ioctl.h>
+#include <linux/inet.h>  
 
 #define SINGLE_P_RULE 1
 #define P_RANGE_RULE 2
