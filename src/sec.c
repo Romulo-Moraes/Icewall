@@ -40,6 +40,10 @@ static void check_proto_rule(struct rule_description *rule, bool *eval) {
     }
 }
 
+bool check_policy_integrity(policy policy) {
+    return (policy == POLICY_ACCEPT || policy == POLICY_DROP);
+}
+
 bool check_rule_integrity(struct rule_description rule) {
     bool eval = true;
 

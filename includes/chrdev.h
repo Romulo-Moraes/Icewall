@@ -3,11 +3,10 @@
 
 #include <linux/fs.h>
 
-#define RULES_DEVICE_NAME "icewall-rules";
+#define RULES_DEVICE_NAME "icewall-rules"
 #define ICEWALL_CLASS "icewall"
 
-long unlocked_ioctl(struct file* file, unsigned int cmd, unsigned long args);
-struct file_operations generate_io_conf();
-void create_chrdev();
+long create_rules_chrdev();
+long destroy_rules_chrdev();
 
 #endif

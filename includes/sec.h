@@ -7,6 +7,7 @@
 #define INTEGRITY_EV_OK 1
 #define INTEGRITY_EV_FAIL 0
 
+bool check_policy_integrity(policy policy);
 bool check_rule_integrity(struct rule_description);
 
 #endif
