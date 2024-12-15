@@ -1,5 +1,4 @@
 #include "../includes/sentinel.h"
-#include "../includes/rules.h"
 
 static struct rule_list_head in;
 static struct rule_list_head out;

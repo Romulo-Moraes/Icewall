@@ -17,10 +17,10 @@ static void check_addr_rule(struct rule_description *rule, bool *eval) {
 static void check_p_rule(struct rule_description *rule, bool *eval) {
     switch (rule->p_rule) {
         case P_RANGE_RULE:
-            *eval &= (rule->p_begin >= 0 && rule->p_end <= UINT16_MAX && rule->p_begin < rule->p_end);
+            *eval &= (rule->p_begin >= 0 && rule->p_end <= __UINT16_MAX__ && rule->p_begin < rule->p_end);
             break;
         case SINGLE_P_RULE:
-            *eval &= (rule->p_begin >= 0 && rule->p_begin <= UINT16_MAX);
+            *eval &= (rule->p_begin >= 0 && rule->p_begin <= __UINT16_MAX__);
             break;
         case NO_P_RULE:
             break;
@@ -48,9 +48,26 @@ bool check_rule_integrity(struct rule_description rule) {
     bool eval = true;
 
     check_policy(&rule, &eval);
+
+    if (eval == false) {
+        pr_info("err1\n");
+    }
+
     check_addr_rule(&rule, &eval);
+
+    if (eval == false) {
+        pr_info("err2\n");
+    }
     check_p_rule(&rule, &eval);
+
+    if (eval == false) {
+        pr_info("err3\n");
+    }
     check_proto_rule(&rule, &eval);
+
+    if (eval == false) {
+        pr_info("err4\n");
+    }
 
     return eval;
 }

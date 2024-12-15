@@ -23,12 +23,10 @@ unsigned int net_hook(void *priv, struct sk_buff *skb, const struct nf_hook_stat
         return NF_ACCEPT;
     }
 
-    pr_info("IPv4 Address: %pI4\n", &hdr->saddr);
+//    pr_info("IPv4 Address: %pI4\n", &hdr->saddr);
 
     return NF_ACCEPT;
 }
 
 EXPORT_SYMBOL(generate_net_hook_conf);
 EXPORT_SYMBOL(net_hook);
-
-MODULE_LICENSE("GPL");

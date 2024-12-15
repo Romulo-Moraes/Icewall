@@ -1,7 +1,8 @@
 #ifndef __SEC_GUARD__
 #define __SEC_GUARD__
 
-#include <stdbool.h>
+#include <linux/types.h>
+#include <linux/limits.h>
 #include "rules.h"
 
 #define INTEGRITY_EV_OK 1

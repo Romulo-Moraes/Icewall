@@ -14,7 +14,7 @@ static long handle_rule_op(unsigned long args, unsigned int cmd) {
     struct rule_description rule;
     long op_stt;
     
-    if (!copy_from_user(&rule, (void*) args, sizeof(rule))) {
+    if (copy_from_user(&rule, (void __user *) args, sizeof(rule)) != 0) {
         return -EFAULT;
     }
 
@@ -30,6 +30,8 @@ static long handle_rule_op(unsigned long args, unsigned int cmd) {
             op_stt = add_firewall_rule(rule, DIRECTION_OUT);
             break;
     }
+
+    //pr_info("op stt: %d\n", op_stt);
 
     return op_stt;
 }
@@ -60,24 +62,27 @@ static long handle_policy_op(unsigned long args, unsigned int cmd) {
 
 static long unlocked_ioctl(struct file* file, unsigned int cmd, unsigned long args) {
     if (cmd == _IOCTL_ADD_INC_RULE || cmd == _IOCTL_ADD_OUT_RULE) {
+        pr_info("Add incoming rule command received\n");
         return handle_rule_op(args, cmd);
     }
 
     if(cmd == _IOCTL_SET_INC_POLICY || cmd == _IOCTL_SET_OUT_POLICY) {
+        pr_info("Add policy command received\n");
         return handle_policy_op(args, cmd);
     }
     
+
     return -ENOTTY;
 }
 
-long create_rules_chrdev() {
+long create_rules_chrdev(void) {
 
     ops = (struct file_operations) {
         .owner = THIS_MODULE,
         .unlocked_ioctl = unlocked_ioctl
     };
     
-    major_number = register_chrdev(0, RULES_DEVICE_NAME, &ops);
+    major_number = register_chrdev(0, DEV_NAME, &ops);
 
     // failure
     if (major_number < 0) {
@@ -101,7 +106,8 @@ long create_rules_chrdev() {
     return 0;
 }
 
-long destroy_rules_chrdev() {
+void destroy_rules_chrdev(void) {
     device_destroy(icewall_class, rules_dev_id);
     unregister_chrdev(major_number, RULES_DEVICE_NAME);
+    class_destroy(icewall_class);
 }

@@ -25,7 +25,7 @@ static direction translate_direction(char *direction);
 struct drop_accept_cmd* parse_drop_accept_cmd(int argc, char *argv[], unsigned char type) {
     char *tokens[3];
     uint8_t tkns_count;
-    struct parse_flags flags = {.addr_parsed = false, .addr_parsed = false, .p_parsed = false};
+    struct parse_flags flags = {.addr_parsed = false, .proto_parsed = false, .p_parsed = false};
 
     if (argc != 4) {
         return NULL;
@@ -39,17 +39,20 @@ struct drop_accept_cmd* parse_drop_accept_cmd(int argc, char *argv[], unsigned c
     drop_accept.dir = translate_direction(argv[2]);
 
     if (drop_accept.dir == UNDEF_DIR) {
+        puts("1");
         return NULL;
     }
 
     tkns_count = tokenize_rule(argv[3], tokens);
 
     if (tkns_count == TOO_MANY_TOKENS || tkns_count == 0) {
+        puts("2");
         return NULL;
     }
 
     for (uint8_t i = 0; i < tkns_count; i++) {
         if (parse_token(tokens[i], &drop_accept.rule, &flags) == PARSE_FAIL) {
+            puts("3");
             return NULL;
         }
     }
@@ -181,12 +184,12 @@ static parse_status parse_addr(char *token, struct rule_description *rule) {
         return PARSE_FAIL;
     }
 
-    int matches = sscanf(token, "%[\^/]/%u%n", addr, &prelen, &n);
+    int matches = sscanf(token, "%[^/]/%u%n", addr, &prelen, &n);
 
-    if (matches != 3 || token[n] != '\0')  {
-        matches = sscanf(token, "%[\^/]%n", addr, &n);
+    if (matches != 2 || token[n] != '\0')  {
+        matches = sscanf(token, "%s%n", addr, &n);
 
-        if (matches != 2 || token[n] != '\0') {
+        if (matches != 1 || token[n] != '\0') {
             return PARSE_FAIL;
         }
     }
@@ -235,6 +238,7 @@ static parse_status parse_proto(char *token, struct rule_description *rule) {
 static parse_status parse_token(char *token, struct rule_description *rule, struct parse_flags *flags) {
     if (parse_addr(token, rule) == PARSE_OK) {
         if (flags->addr_parsed == true) {
+            
             return PARSE_FAIL;
         }
             

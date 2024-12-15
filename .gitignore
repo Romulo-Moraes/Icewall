@@ -1,4 +1,4 @@
-tests/*
 src/**/*
 !src/**/*.c
 src/**/*.mod.c
+controller/src/wallctl

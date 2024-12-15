@@ -1,7 +1,7 @@
 #ifndef __ICEWALL_CTRL__
 #define __ICEWALL_CTRL__
 
-#include "rules.h"
+#include "rules-types.h"
 
 #define MAGIC_BYTE 'R'
 

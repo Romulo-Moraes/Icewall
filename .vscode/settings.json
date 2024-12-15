@@ -9,6 +9,23 @@
         "kernel.h": "c",
         "netfilter.h": "c",
         "rules.h": "c",
-        "icewall-ctrl.h": "c"
+        "icewall-ctrl.h": "c",
+        "sec.h": "c",
+        "slab.h": "c",
+        "inet.h": "c",
+        "sentinel.h": "c",
+        "types.h": "c",
+        "ioctl.h": "c",
+        "stdlib.h": "c",
+        "fcntl.h": "c",
+        "usage.h": "c",
+        "parser.h": "c",
+        "stdbool.h": "c",
+        "cstdio": "cpp",
+        "stdio.h": "c",
+        "icewall.h": "c",
+        "uaccess.h": "c",
+        "rules-structs.h": "c",
+        "rules-types.h": "c"
     }
 }

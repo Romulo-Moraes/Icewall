@@ -18,6 +18,7 @@
 #define NO_PROTO_RULE 9
 #define POLICY_ACCEPT 10
 #define POLICY_DROP 11
+#define DEV_NAME "icewall-rules"
 
 typedef unsigned char policy;
 typedef unsigned char rule_type;
