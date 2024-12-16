@@ -126,11 +126,11 @@ struct list_cmd* parse_list_cmd(int argc, char *argv[]) {
 
 static parse_status parse_port(char *token, struct rule_description *rule) {
     uint16_t p_begin, p_end;
-    unsigned long n;
+    int n;
 
     int matches = sscanf(token, "%d-%d%n", &p_begin, &p_end, &n);
 
-    if (matches == 3) {
+    if (matches == 2) {
         if (token[n] == '\0') {
             rule->p_rule = P_RANGE_RULE;
             rule->p_begin = p_begin;
@@ -141,7 +141,7 @@ static parse_status parse_port(char *token, struct rule_description *rule) {
     } else {
         matches = sscanf(token, "%d%n", &p_begin, &n);
 
-        if (matches == 2) {
+        if (matches == 1) {
             if (token[n] == '\0') {
                 rule->p_rule = SINGLE_P_RULE;
                 rule->p_begin = p_begin;
@@ -219,7 +219,7 @@ static parse_status parse_addr(char *token, struct rule_description *rule) {
 }
 
 static parse_status parse_proto(char *token, struct rule_description *rule) {
-    unsigned long n;
+    int n;
     char proto[8];
 
     if (strlen(token) > 5) {
@@ -228,7 +228,7 @@ static parse_status parse_proto(char *token, struct rule_description *rule) {
 
     int matches = sscanf(token, "%s%n", proto, &n);
 
-    if (matches != 2 || token[n] != '\0') {
+    if (matches != 1 || token[n] != '\0') {
         return PARSE_FAIL;
     }
 
@@ -246,7 +246,6 @@ static parse_status parse_proto(char *token, struct rule_description *rule) {
 static parse_status parse_token(char *token, struct rule_description *rule, struct parse_flags *flags) {
     if (parse_addr(token, rule) == PARSE_OK) {
         if (flags->addr_parsed == true) {
-            
             return PARSE_FAIL;
         }
             

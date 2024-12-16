@@ -26,6 +26,7 @@
         "icewall.h": "c",
         "uaccess.h": "c",
         "rules-structs.h": "c",
-        "rules-types.h": "c"
+        "rules-types.h": "c",
+        "little_endian.h": "c"
     }
 }

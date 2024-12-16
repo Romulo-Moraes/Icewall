@@ -40,8 +40,6 @@ void send_add_rule_cmd(struct drop_accept_cmd *parsed_cmd) {
     } else {
         stt = ioctl(fd, _IOCTL_ADD_OUT_RULE, &parsed_cmd->rule);
     }
-
-    printf("status: %d\n", stt);
 }
 
 void list_rules(direction dir, struct ioctl_list_result *result) {

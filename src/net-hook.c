@@ -1,4 +1,6 @@
 #include <linux/ip.h>
+#include <linux/tcp.h>
+#include <linux/udp.h>
 #include <linux/byteorder/little_endian.h>
 #include "../includes/net-hook.h"
 #include "../includes/sentinel.h"
@@ -16,21 +18,31 @@ struct nf_hook_ops generate_net_hook_conf(void) {
 
 unsigned int net_hook(void *priv, struct sk_buff *skb, const struct nf_hook_state *state) {
     action act;
+    u16 dport;
 
     if (skb == NULL) {
         return NF_ACCEPT;
     }
 
-    struct iphdr *hdr = ip_hdr(skb);
+    struct iphdr *iph = ip_hdr(skb);
 
-    if (!hdr) {
+    if (!iph) {
         return NF_ACCEPT;
     }
 
+    if (iph->protocol == IPPROTO_TCP) {
+        struct tcphdr *tcph = (struct tcphdr*)((__u32*)iph + iph->ihl);
+
+        dport = ntohs(tcph->dest);
+    } else if (iph->protocol == IPPROTO_UDP){
+        struct udphdr *udph = (struct udphdr*)((__u32*)iph + iph->ihl);
+        dport = ntohs(udph->dest);
+    }
+
     test_packet((struct packet) {
-        .addr = ntohl(hdr->saddr),
-        .hport = 8080,
-        .proto = hdr->protocol
+        .addr = ntohl(iph->saddr),
+        .hport = dport,
+        .proto = iph->protocol
     }, DIRECTION_IN, &act);
 
     return (act == POLICY_DROP ? NF_DROP : NF_ACCEPT);
