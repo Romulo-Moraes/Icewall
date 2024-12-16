@@ -168,7 +168,6 @@ static void test_port_rule(struct ruleset_test_flags *flags, struct rule_list_no
 static void test_proto_rule(struct ruleset_test_flags *flags, struct rule_list_node *n, struct packet pckt) {
     switch (n->desc.proto_rule) {
         case TCP_PROTO_RULE:
-
             if (pckt.proto == IPPROTO_TCP) {
                 flags->proto_check = TEST_MATCH;
             } else {

@@ -27,6 +27,7 @@
         "uaccess.h": "c",
         "rules-structs.h": "c",
         "rules-types.h": "c",
-        "little_endian.h": "c"
+        "little_endian.h": "c",
+        "helpers.h": "c"
     }
 }

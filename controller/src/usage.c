@@ -1,52 +1,57 @@
 #include "../includes/usage.h"
 #include <stdio.h>
 
-#define SYNTAX(explain) explain == true ? "\tsyntax: " : ""
+#define SYNTAX(explain) if(explain == true) { printf("Syntax: "); }
 
 void print_drop_syntax(bool explain) {
-    puts(SYNTAX(explain) "drop <incoming/outgoing> <[address]:[port]:[protocol]>");
-
     if (explain == true) {
-        puts("\ndescription: drops the incoming OR outgoing packets that match the filter. [x] is optional, but at least one is required.");
+        puts("Description: drops the incoming OR outgoing packets that match the filter.\n             [ address | port | protocol ] are optional, but at least one is required.");
     }
+
+    SYNTAX(explain);
+    puts("drop <incoming/outgoing> <[address]:[port]:[protocol]>");
 }
 
 void print_accept_syntax(bool explain) {
-    puts(SYNTAX(explain) "accept <incoming/outgoing> <[address]:[port]:[protocol]>");
-
     if (explain == true) {
-        puts("\ndescription: accepts the incoming OR outgoing packets that match the filter. [x] is optional, but at least is required.");
+        puts("Description: accepts the incoming OR outgoing packets that match the filter.\n             [ address | port | protocol ] are optional, but at least one is required.");
     }
+
+    SYNTAX(explain);
+    puts("accept <incoming/outgoing> <[address]:[port]:[protocol]>");
 }
 
 void print_default_syntax(bool explain) {
-    puts(SYNTAX(explain) "default <incoming/outgoing> policy <accept/drop>");
-
     if (explain == true) {
-        puts("\ndescription: sets the default policy of incoming OR outgoing packets to accept OR drop.");
+        puts("Description: sets the default policy of incoming OR outgoing packets to accept OR drop.");
     }
+
+    SYNTAX(explain);
+    puts("default <incoming/outgoing> policy <accept/drop>");
 }
 
 void print_rm_syntax(bool explain){
-    puts(SYNTAX(explain) "syntax: rm <id>");
-
     if (explain == true) {
-        puts("\ndescription: removes the rule based on the given id.");
+        puts("Description: removes the incoming OR outgoing rule based on the given id.");
     }
+
+    SYNTAX(explain);
+    puts("rm <incoming/outgoing> <id>");
 }
 
 void print_list_synxtax(bool explain) {
-    puts(SYNTAX(explain) "list <incoming/outgoing>");
-
     if (explain == true) {
-        puts("\ndescription: lists the current incoming OR outgoing rules");
+        puts("Description: lists the current incoming OR outgoing rules");
     }
+
+    SYNTAX(explain);
+    puts("list <incoming/outgoing>");
 }
 
 void print_usage() {
     puts("wallctl: the icewall firewall controller");
     
-    puts("\nusage:");
+    puts("\nwallctl controller usage:\n");
 
     print_drop_syntax(false);
     print_accept_syntax(false);
