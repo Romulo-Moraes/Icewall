@@ -132,6 +132,18 @@ void print_rules(struct ioctl_list_result *result, direction dir, policy policy)
     }
 }
 
+int rm_rule(r_id id, direction dir) {
+    int fd;
+    struct ioctl_rm_rule rm = {
+        .id = id,
+        .dir = dir
+    };
+
+    fd = open_rules_chrdev();
+
+    return ioctl(fd, _IOCTL_RM_RULE, &rm);
+}
+
 int main(int argc, char *argv[]) {
     bool act_performed = false;
     int chrdev_fd;
@@ -145,10 +157,6 @@ int main(int argc, char *argv[]) {
 
     if (strcmp(argv[1], "drop") == 0) {
         parsed_cmd = parse_drop_accept_cmd(argc, argv, DROP);
-
-        if (parsed_cmd == NULL) {
-            exit(1);
-        }
 
         send_add_rule_cmd(parsed_cmd);
 
@@ -170,6 +178,14 @@ int main(int argc, char *argv[]) {
 
     if (strcmp(argv[1], "rm") == 0) {
         struct rm_cmd *parsed_cmd = parse_rm_cmd(argc, argv);
+
+        if (rm_rule(parsed_cmd->id, parsed_cmd->dir) < 0) {
+            printf("the %s rule id %d does not exist.\n", argv[2], parsed_cmd->id);
+            return EXIT_FAILURE;
+        }
+
+        printf("%s rule id %d removed.\n", argv[2], parsed_cmd->id);
+
         act_performed = true;
     }
 

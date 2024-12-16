@@ -4,6 +4,8 @@ static struct rule_list_head in;
 static struct rule_list_head out;
 static policy in_policy = POLICY_ACCEPT;
 static policy out_policy = POLICY_ACCEPT;
+static uint32_t inc_id = 0;
+static uint32_t out_id = 0;
 
 void init_sentinel() {
     init_rule_list(&in, in_policy);
@@ -39,10 +41,10 @@ long add_firewall_rule(struct rule_description rule, direction dir) {
 
     switch (dir) {
         case DIRECTION_IN:
-            stt = add_rule(&in, rule);
+            stt = add_rule(&in, rule, inc_id++);
             break;
         case DIRECTION_OUT:
-            stt = add_rule(&out, rule);
+            stt = add_rule(&out, rule, out_id++);
             break;
         default:
             return -EINVAL;
@@ -51,6 +53,22 @@ long add_firewall_rule(struct rule_description rule, direction dir) {
 
     if (stt == MEM_FAILURE) {
         return -ENOMEM;
+    }
+
+    return 0;
+}
+
+long rm_firewall_rule(r_id id, direction dir) {
+    opstatus stt;
+
+    if (dir == DIRECTION_IN) {
+        stt = remove_rule(&in, id);
+    } else {
+        stt = remove_rule(&out, id);
+    }
+
+    if (stt == RULE_NEXIST) {
+        return -EINVAL;
     }
 
     return 0;

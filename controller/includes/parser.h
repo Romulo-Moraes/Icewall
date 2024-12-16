@@ -39,6 +39,7 @@ struct default_cmd {
 
 struct rm_cmd {
     uint32_t id;
+    direction dir;
 };
 
 struct list_cmd {

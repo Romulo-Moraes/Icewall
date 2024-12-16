@@ -1,4 +1,5 @@
 #include "../includes/parser.h"
+#include "../../includes/icewall-ctrl.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -88,15 +89,21 @@ struct default_cmd* parse_default_cmd(int argc, char *argv[]) {
 }
 
 struct rm_cmd* parse_rm_cmd(int argc, char *argv[]) {
-    unsigned long n;
+    int n;
 
-    if (argc != 3) {
+    if (argc != 4) {
         return NULL;
     }
 
-    int matches = sscanf(argv[2], "%d%n", &rm.id, &n);
+    rm.dir = translate_direction(argv[2]);
 
-    if (matches != 2 || argv[2][n] != '\0') {
+    if (rm.dir == UNDEF_DIR) {
+        return NULL;
+    }
+
+    int matches = sscanf(argv[3], "%d%n", &rm.id, &n);
+
+    if (matches != 1 || argv[3][n] != '\0') {
         return NULL;
     }
 
@@ -167,9 +174,9 @@ static uint8_t tokenize_rule(char *rule, char *tokens[3]) {
 
 static direction translate_direction(char *direction) {
     if (strcmp(direction, "incoming") == 0) {
-        return INCOMING;
+        return DIRECTION_IN;
     } else if (strcmp(direction, "outgoing") == 0) {
-        return OUTGOING;
+        return DIRECTION_OUT;
     } else {
         return UNDEF_DIR;
     }

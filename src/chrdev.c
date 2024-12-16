@@ -13,6 +13,7 @@ static int major_number;
 static long handle_rule_op(unsigned long args, unsigned int cmd);
 static long handle_rule_list_op(unsigned long args, unsigned int cmd);
 static long handle_policy_op(unsigned long args, unsigned int cmd);
+static long handle_rm_rule_op(unsigned long args);
 
 static long unlocked_ioctl(struct file* file, unsigned int cmd, unsigned long args) {
     if (cmd == _IOCTL_ADD_INC_RULE || cmd == _IOCTL_ADD_OUT_RULE) {
@@ -26,11 +27,26 @@ static long unlocked_ioctl(struct file* file, unsigned int cmd, unsigned long ar
     }
 
     if (cmd == _IOCTL_LIST_INC || cmd == _IOCTL_LIST_OUT) {
-        pr_info("List rules command received");
+        pr_info("List rules command received\n");
         return handle_rule_list_op(args, cmd);
     }
 
+    if (cmd == _IOCTL_RM_RULE) {
+        pr_info("Remove rule command received\n");
+        return handle_rm_rule_op(args);
+    }
+
     return -ENOTTY;
+}
+
+static long handle_rm_rule_op(unsigned long args) {
+    struct ioctl_rm_rule cmd;
+
+    if (copy_from_user(&cmd, (void __user*) args, sizeof(cmd)) != 0) {
+        return -EFAULT; 
+    }
+
+    return rm_firewall_rule(cmd.id, cmd.dir);
 }
 
 long create_rules_chrdev(void) {

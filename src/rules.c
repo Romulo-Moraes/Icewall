@@ -7,17 +7,15 @@
 
 typedef unsigned char subnet_stt;
 
-static uint32_t id = 0;
+// void zero_id() {
+//     id = 0;
+// }
 
-void zero_id() {
-    id = 0;
-}
-
-static void fill_rule_node(struct rule_list_node *n, struct rule_description desc) {
+static void fill_rule_node(struct rule_list_node *n, struct rule_description desc, r_id id) {
     // accept outgoing 255.255.255.255:65000:tcp
     // accept incoming
     n->desc = desc;
-    n->id = id++;
+    n->id = id;
     n->next = NULL;
 }
 
@@ -25,14 +23,14 @@ static void fill_rule_node(struct rule_list_node *n, struct rule_description des
  * add a new rule to the firewall
  * @returns MEM_FAILURE on dynamic memory allocation failure, ADD_NO_ERR otherwise
  */
-opstatus add_rule(struct rule_list_head *list_head, struct rule_description desc) {
+opstatus add_rule(struct rule_list_head *list_head, struct rule_description desc, r_id id) {
     struct rule_list_node *n = (struct rule_list_node*) kmalloc(sizeof(struct rule_list_node), GFP_KERNEL);
 
     if (!n) {
         return MEM_FAILURE;
     }
 
-    fill_rule_node(n, desc);
+    fill_rule_node(n, desc, id);
 
     if (list_head->end != NULL) {
         list_head->end->next = n;
