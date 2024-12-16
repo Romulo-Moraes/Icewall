@@ -1,5 +1,7 @@
 #include <linux/ip.h>
+#include <linux/byteorder/little_endian.h>
 #include "../includes/net-hook.h"
+#include "../includes/sentinel.h"
 
 struct nf_hook_ops generate_net_hook_conf(void) {
     struct nf_hook_ops hook_ops = {
@@ -13,6 +15,8 @@ struct nf_hook_ops generate_net_hook_conf(void) {
 }
 
 unsigned int net_hook(void *priv, struct sk_buff *skb, const struct nf_hook_state *state) {
+    action act;
+
     if (skb == NULL) {
         return NF_ACCEPT;
     }
@@ -23,9 +27,13 @@ unsigned int net_hook(void *priv, struct sk_buff *skb, const struct nf_hook_stat
         return NF_ACCEPT;
     }
 
-//    pr_info("IPv4 Address: %pI4\n", &hdr->saddr);
+    test_packet((struct packet) {
+        .addr = ntohl(hdr->saddr),
+        .hport = 8080,
+        .proto = hdr->protocol
+    }, DIRECTION_IN, &act);
 
-    return NF_ACCEPT;
+    return (act == POLICY_DROP ? NF_DROP : NF_ACCEPT);
 }
 
 EXPORT_SYMBOL(generate_net_hook_conf);

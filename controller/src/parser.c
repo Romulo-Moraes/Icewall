@@ -39,20 +39,21 @@ struct drop_accept_cmd* parse_drop_accept_cmd(int argc, char *argv[], unsigned c
     drop_accept.dir = translate_direction(argv[2]);
 
     if (drop_accept.dir == UNDEF_DIR) {
-        puts("1");
         return NULL;
     }
 
     tkns_count = tokenize_rule(argv[3], tokens);
 
     if (tkns_count == TOO_MANY_TOKENS || tkns_count == 0) {
-        puts("2");
         return NULL;
     }
-
+    
     for (uint8_t i = 0; i < tkns_count; i++) {
-        if (parse_token(tokens[i], &drop_accept.rule, &flags) == PARSE_FAIL) {
-            puts("3");
+        char *token = tokens[i];
+        struct rule_description *rule = &drop_accept.rule;
+        struct parse_flags *f = &flags;
+
+        if (parse_token(token, rule, f) == PARSE_FAIL) {
             return NULL;
         }
     }
@@ -178,18 +179,18 @@ static parse_status parse_addr(char *token, struct rule_description *rule) {
     char addr[32];
     struct in_addr parsed_addr;
     prefix prelen;
-    unsigned long n;
+    int my_value;
 
     if (strlen(token) > 31) {
         return PARSE_FAIL;
     }
 
-    int matches = sscanf(token, "%[^/]/%u%n", addr, &prelen, &n);
+    int matches = sscanf(token, "%[^/]/%u%n", addr, &prelen, &my_value);
 
-    if (matches != 2 || token[n] != '\0')  {
-        matches = sscanf(token, "%s%n", addr, &n);
+    if (matches != 2 || token[my_value] != '\0')  {
+        matches = sscanf(token, "%s%n", addr, &my_value);
 
-        if (matches != 1 || token[n] != '\0') {
+        if (matches != 1 || token[my_value] != '\0') {
             return PARSE_FAIL;
         }
     }
@@ -198,7 +199,7 @@ static parse_status parse_addr(char *token, struct rule_description *rule) {
         return PARSE_FAIL;
     }
 
-    if (matches == 3) {
+    if (matches == 2) {
         rule->ip_rule = ADDR_SET_RULE;
         rule->addr = ntohl(parsed_addr.s_addr);
         rule->pre_len = prelen;
@@ -256,6 +257,7 @@ static parse_status parse_token(char *token, struct rule_description *rule, stru
 
         return PARSE_OK;
     }
+
 
     if (parse_proto(token, rule) == PARSE_OK) {
         if (flags->proto_parsed == true) {

@@ -21,7 +21,7 @@ static int __init entry_procedure(void) {
         return -chrdev_stt;
     }
 
-    pr_info("Firewall is UP and running!\n");
+    pr_info("The icewall is up and running!\n");
 
     return 0;
 }
@@ -30,7 +30,7 @@ static void __exit exit_procedure(void) {
     nf_unregister_net_hook(&init_net, &hook_ops);
     destroy_rules_chrdev();
 
-    pr_info("Firewall is down!\n");
+    pr_info("The icewall is down!\n");
 }
 
 module_init(entry_procedure);

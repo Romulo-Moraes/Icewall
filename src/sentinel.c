@@ -10,6 +10,24 @@ void init_sentinel() {
     init_rule_list(&out, out_policy);
 }
 
+policy get_policy(direction dir) {
+    if (dir == DIRECTION_IN) {
+        return in_policy;
+    } else {
+        return out_policy;
+    }
+}
+
+struct rule_list_node* get_act_rules(direction dir) {
+    if (dir == DIRECTION_IN) {
+        return in.begin;
+    } else if (dir == DIRECTION_OUT) {
+        return out.begin;
+    } else {
+        return NULL;
+    }
+}
+
 /**
  * add a new rule to the firewall
  * @param rule the rule that will be added

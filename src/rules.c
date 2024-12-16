@@ -1,5 +1,6 @@
 #include "./../includes/rules.h"
 #include <linux/slab.h>
+#include "../includes/sentinel.h"
 
 #define NET_SUBNET 1
 #define NET_N_SUBNET 2
@@ -13,6 +14,8 @@ void zero_id() {
 }
 
 static void fill_rule_node(struct rule_list_node *n, struct rule_description desc) {
+    // accept outgoing 255.255.255.255:65000:tcp
+    // accept incoming
     n->desc = desc;
     n->id = id++;
     n->next = NULL;
@@ -113,7 +116,7 @@ static void test_addr_rule(struct ruleset_test_flags *flags, struct rule_list_no
 
     switch (n->desc.ip_rule) {
         case SINGLE_ADDR_RULE:
-
+            pr_info("%d | %d\n", n->desc.addr, pckt.addr);
             if (n->desc.addr == pckt.addr) {
                 flags->addr_check = TEST_MATCH;
             } else {
