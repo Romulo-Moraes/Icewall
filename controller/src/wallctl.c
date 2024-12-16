@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
             return EXIT_FAILURE;
         }
 
-        int fd = open_rules_chrdev();
+        int fd = open_rules_chrdev(RULES_DEV_FILE);
 
         if (parsed_cmd->dir == DIRECTION_IN) {
             ioctl(fd, _IOCTL_SET_INC_POLICY, &parsed_cmd->policy);

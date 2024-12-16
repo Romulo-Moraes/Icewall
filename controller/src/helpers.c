@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <sys/ioctl.h>
 
-static int open_rules_chrdev(char *chr_dev) {
+int open_rules_chrdev(char *chr_dev) {
     int chrdev_fd = open(chr_dev, O_RDWR);
 
     if (chrdev_fd < 0) {
@@ -45,10 +45,10 @@ void generate_p_rule(struct rule_description desc, bool *first_rule, char *buffe
     if (desc.p_rule == SINGLE_P_RULE || desc.p_rule == P_RANGE_RULE) {
         switch (desc.p_rule) {
             case SINGLE_P_RULE:
-                sprintf(tmp, "%c%d", !*first_rule ? ":" : "", desc.p_begin);
+                sprintf(tmp, "%s%d", !*first_rule ? ":" : "", desc.p_begin);
                 break;
             case P_RANGE_RULE:
-                sprintf(tmp, "%c%d-%d", !first_rule ? ":" : "", desc.p_begin, desc.p_end);                
+                sprintf(tmp, "%s%d-%d", !first_rule ? ":" : "", desc.p_begin, desc.p_end);                
                 break;
         }
 
@@ -61,7 +61,7 @@ void generate_proto_rule(rule_type proto_rule, bool *first_rule, char *buffer_ou
     char tmp[32];
 
     if (proto_rule == TCP_PROTO_RULE || proto_rule == UDP_PROTO_RULE) {
-        sprintf(tmp, "%c%s", !*first_rule ? ":" : "", proto_rule == TCP_PROTO_RULE ? "tcp" : "udp");
+        sprintf(tmp, "%s%s", !*first_rule ? ":" : "", proto_rule == TCP_PROTO_RULE ? "tcp" : "udp");
         strcat(buffer_out, tmp);
     }
 }

@@ -5,6 +5,7 @@
 #include "../includes/parser.h"
 #include "../../includes/icewall-ctrl.h"
 
+int open_rules_chrdev(char *chr_dev);
 void list_rules(direction dir, struct ioctl_list_result *result, char *chr_dev);
 void send_add_rule_cmd(struct drop_accept_cmd *parsed_cmd, char *chr_dev);
 void generate_p_rule(struct rule_description desc, bool *first_rule, char *buffer_out);

@@ -5,7 +5,7 @@ KVERSION := $(shell uname -r)
 KDIR := /lib/modules/$(KVERSION)/build
 
 # The name of the module
-MNAME := icewalll
+MNAME := icewall
 
 # Compiler options (optional)
 CC := gcc
@@ -15,7 +15,7 @@ EXTRA_CFLAGS := -I$(KDIR)/include
 obj-m := $(MNAME).o
 
 # List of objects files for the module
-$(MNAME)-objs := icewall-main.o net-hook.o rules.o sec.o sentinel.o chrdev.o
+$(MNAME)-objs := main.o net-hook.o rules.o sec.o sentinel.o chrdev.o
 
 all: compile
 
