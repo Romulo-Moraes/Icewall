@@ -41,6 +41,10 @@ static void check_proto_rule(struct rule_description *rule, bool *eval) {
     }
 }
 
+bool check_dir_integrity(direction dir) {
+    return (dir == DIRECTION_IN || dir == DIRECTION_OUT);
+}
+
 bool check_policy_integrity(policy policy) {
     return (policy == POLICY_ACCEPT || policy == POLICY_DROP);
 }

@@ -63,7 +63,7 @@ struct drop_accept_cmd* parse_drop_accept_cmd(int argc, char *argv[], unsigned c
 }
 
 struct default_cmd* parse_default_cmd(int argc, char *argv[]) {
-    if (argc != 4) {
+    if (argc != 5) {
         return NULL;
     }
 

@@ -30,10 +30,11 @@ struct ioctl_rm_rule {
 
 #define _IOCTL_ADD_INC_RULE _IOC(_IOC_WRITE, MAGIC_BYTE, 1, sizeof(struct rule_description))
 #define _IOCTL_ADD_OUT_RULE _IOC(_IOC_WRITE, MAGIC_BYTE, 2, sizeof(struct rule_description))
-#define _IOCTL_SET_INC_POLICY _IOC(_IOC_WRITE, MAGIC_BYTE, 3, sizeof(uint8_t))
-#define _IOCTL_SET_OUT_POLICY _IOC(_IOC_WRITE, MAGIC_BYTE, 4, sizeof(uint8_t))
+#define _IOCTL_SET_INC_POLICY _IOC(_IOC_WRITE, MAGIC_BYTE, 3, sizeof(policy))
+#define _IOCTL_SET_OUT_POLICY _IOC(_IOC_WRITE, MAGIC_BYTE, 4, sizeof(policy))
 #define _IOCTL_LIST_INC _IOC(_IOC_READ, MAGIC_BYTE, 5, sizeof(struct ioctl_list_result))
 #define _IOCTL_LIST_OUT _IOC(_IOC_READ, MAGIC_BYTE, 6, sizeof(struct ioctl_list_result))
 #define _IOCTL_RM_RULE _IOC(_IOC_WRITE, MAGIC_BYTE, 7, sizeof(struct ioctl_rm_rule))
+#define _IOCTL_DFT_POLICY _IOC(_IOC_WRITE, MAGIC_BYTE, 8, sizeof(struct ioctl_dft_policy))
 
 #endif

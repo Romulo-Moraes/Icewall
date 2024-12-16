@@ -46,6 +46,10 @@ static long handle_rm_rule_op(unsigned long args) {
         return -EFAULT; 
     }
 
+    if (check_dir_integrity(cmd.dir) != true) {
+        return -EINVAL;
+    }
+
     return rm_firewall_rule(cmd.id, cmd.dir);
 }
 
@@ -117,7 +121,7 @@ static long handle_policy_op(unsigned long args, unsigned int cmd) {
     policy pol;
     long op_stt;
 
-    if (!copy_from_user(&pol, (void*) args, sizeof(pol))) {
+    if (copy_from_user(&pol, (void __user*) args, sizeof(pol)) != 0) {
         return -EFAULT;
     }
 

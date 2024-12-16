@@ -173,6 +173,19 @@ int main(int argc, char *argv[]) {
 
     if (strcmp(argv[1], "default") == 0) {
         struct default_cmd *parsed_cmd = parse_default_cmd(argc, argv);
+
+        if (parsed_cmd == NULL) {
+            puts("null");
+        }
+
+        int fd = open_rules_chrdev();
+
+        if (parsed_cmd->dir == DIRECTION_IN) {
+            ioctl(fd, _IOCTL_SET_INC_POLICY, &parsed_cmd->policy);
+        } else {
+            ioctl(fd, _IOCTL_SET_OUT_POLICY, &parsed_cmd->policy);
+        }
+            
         act_performed = true;
     }
 
