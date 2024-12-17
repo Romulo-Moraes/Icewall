@@ -5,3 +5,7 @@ src/**/*.mod.c
 controller/src/wallctl
 controller/build/*
 !controller/build/.gitkeep
+assets/*
+!assets/icewall-cover.png
+!assets/icewall-logo.png
+out

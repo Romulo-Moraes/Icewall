@@ -2,7 +2,6 @@
 #include <check.h>
 #define static
 #include "../src/sec.c"
-
 START_TEST(policy_rule) {
     bool eval = true;
 
