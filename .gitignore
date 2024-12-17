@@ -3,3 +3,5 @@ src/**/*
 !Makefile
 src/**/*.mod.c
 controller/src/wallctl
+controller/build/*
+!controller/build/.gitkeep
