@@ -17,22 +17,18 @@ static long handle_rm_rule_op(unsigned long args);
 
 static long unlocked_ioctl(struct file* file, unsigned int cmd, unsigned long args) {
     if (cmd == _IOCTL_ADD_INC_RULE || cmd == _IOCTL_ADD_OUT_RULE) {
-        pr_info("Add firewall rule command received\n");
         return handle_rule_op(args, cmd);
     }
 
     if(cmd == _IOCTL_SET_INC_POLICY || cmd == _IOCTL_SET_OUT_POLICY) {
-        pr_info("Set default policy command received\n");
         return handle_policy_op(args, cmd);
     }
 
     if (cmd == _IOCTL_LIST_INC || cmd == _IOCTL_LIST_OUT) {
-        pr_info("List rules command received\n");
         return handle_rule_list_op(args, cmd);
     }
 
     if (cmd == _IOCTL_RM_RULE) {
-        pr_info("Remove rule command received\n");
         return handle_rm_rule_op(args);
     }
 
@@ -111,8 +107,6 @@ static long handle_rule_op(unsigned long args, unsigned int cmd) {
             op_stt = add_firewall_rule(rule, DIRECTION_OUT);
             break;
     }
-
-    //pr_info("op stt: %d\n", op_stt);
 
     return op_stt;
 }
