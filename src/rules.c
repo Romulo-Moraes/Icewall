@@ -102,7 +102,13 @@ errmsg init_rule_list(struct rule_list_head *list_head, unsigned char policy) {
 }
 
 static subnet_stt apply_netmask(uint32_t pckt_addr, uint32_t rule_addr, uint8_t pre_len) {
-    uint32_t mask = (__UINT32_MAX__ << (32 - pre_len));
+    uint32_t mask = __UINT32_MAX__;
+
+    if (pre_len == 0) {
+        mask = 0;
+    } else {
+        mask = mask << (32 - pre_len);
+    }
 
     pckt_addr = pckt_addr & mask;
 
@@ -122,6 +128,7 @@ static void test_addr_rule(struct ruleset_test_flags *flags, struct rule_list_no
 
             break;
         case ADDR_SET_RULE:
+            pr_info("Set rule: %d | %d\n", pckt.addr, n->desc.addr);
 
             stt = apply_netmask(pckt.addr, n->desc.addr, n->desc.pre_len);
 
