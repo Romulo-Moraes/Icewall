@@ -13,35 +13,35 @@
 </ul>
 
 ## Table of contents
-[Technical information]()
+[Technical information](#technical-information)
 
-[Building the icewall]()
+[Building the icewall](#building-the-icewall)
 
-- [Dependencies]()
+- [Dependencies](#dependencies)
 
-- [Downloading the source code]()
+- [Downloading the source code](#downloading-the-source-code)
 
-- [Setting up the CMake build system]()
+- [Setting up the CMake build system](#setting-up-the-cmake-build-system)
 
-- [Compiling the source code]()
+- [Compiling the source code](#compiling-the-source-code)
 
-[Launching the icewall]()
+[Launching the icewall](#launching-the-icewall)
 
-[Defining rules]()
+[Defining rules](#defining-rules)
 
-- [Drop]()
+- [Drop](#drop)
 
-- [Accept]()
+- [Accept](#accept)
 
-- [Default policy]()
+- [Default policy](#default-policy)
 
-- [Port ranges and subnets]()
+- [Rule modifiers](#rule-modifiers)
 
-[Rules management]()
+[Rules management](#rules-management)
 
-- [Listing rules]()
+- [Listing rules](#listing-rules)
 
-- [Removing rules]()
+- [Removing rules](#removing-rules)
 
 ## Technical information
 The icewall is a security application written in C programming language. The core of this application is a binary that runs on kernel mode, analysing incoming and outgoing network packets and testing them against  defined rules.
