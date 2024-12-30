@@ -3,8 +3,11 @@
 
 #include <linux/types.h>
 #include <linux/limits.h>
+
+#include <icewall-ctrl.h>
+
 #include "rules.h"
-#include "icewall-ctrl.h"
+
 
 #define INTEGRITY_EV_OK 1
 #define INTEGRITY_EV_FAIL 0

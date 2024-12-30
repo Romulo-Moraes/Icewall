@@ -1,8 +1,10 @@
-#include "../includes/chrdev.h"
-#include "../includes/icewall-ctrl.h"
-#include "../includes/sec.h"
-#include "../includes/sentinel.h"
 #include <linux/uaccess.h>
+
+#include <icewall-ctrl.h>
+
+#include "includes/chrdev.h"
+#include "includes/sec.h"
+#include "includes/sentinel.h"
 
 static struct file_operations ops;
 static dev_t rules_dev_id;

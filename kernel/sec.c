@@ -1,5 +1,5 @@
-#include "../includes/sec.h"
-#include "../includes/icewall-ctrl.h"
+#include "includes/sec.h"
+#include <icewall-ctrl.h>
 
 static void check_addr_rule(struct rule_description *rule, bool *eval) {
     switch (rule->ip_rule) {

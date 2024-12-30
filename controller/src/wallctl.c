@@ -6,10 +6,10 @@
 #include <arpa/inet.h>
 #include <stdbool.h>
 
-#include "../includes/usage.h"
-#include "../includes/parser.h"
-#include "../../includes/icewall-ctrl.h"
-#include "../includes/helpers.h"
+#include <usage.h>
+#include <parser.h>
+#include <icewall-ctrl.h>
+#include <helpers.h>
 
 #define RULES_DEV_FILE "/dev/" DEV_NAME
 

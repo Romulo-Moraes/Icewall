@@ -2,7 +2,7 @@
 #define __PARSER_GUARD__
 
 #include <stdint.h>
-#include "../../includes/icewall.h"
+#include <icewall.h>
 
 #define INCOMING 1
 #define OUTGOING 2

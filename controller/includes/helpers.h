@@ -2,8 +2,9 @@
 #define __HELPERS_GUARD__
 
 #include <stdbool.h>
-#include "../includes/parser.h"
-#include "../../includes/icewall-ctrl.h"
+#include <icewall-ctrl.h>
+
+#include "parser.h"
 
 int open_rules_chrdev(char *chr_dev);
 void list_rules(direction dir, struct ioctl_list_result *result, char *chr_dev);

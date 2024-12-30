@@ -1,8 +1,8 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
-#include "./../includes/net-hook.h"
-#include "./../includes/sentinel.h"
-#include "./../includes/chrdev.h"
+#include "includes/net-hook.h"
+#include "includes/sentinel.h"
+#include "includes/chrdev.h"
 
 static struct nf_hook_ops inc_hook_ops;
 static struct nf_hook_ops out_hook_ops;

@@ -1,6 +1,6 @@
-#include "./../includes/rules.h"
+#include "includes/rules.h"
 #include <linux/slab.h>
-#include "../includes/sentinel.h"
+#include "includes/sentinel.h"
 
 #define NET_SUBNET 1
 #define NET_N_SUBNET 2

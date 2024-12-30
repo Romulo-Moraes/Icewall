@@ -1,10 +1,11 @@
 #include <fcntl.h>
 #include <arpa/inet.h>
-#include "../includes/helpers.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
+
+#include <helpers.h>
 
 int open_rules_chrdev(char *chr_dev) {
     int chrdev_fd = open(chr_dev, O_RDWR);

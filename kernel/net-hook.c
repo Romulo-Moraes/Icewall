@@ -2,8 +2,8 @@
 #include <linux/tcp.h>
 #include <linux/udp.h>
 #include <linux/byteorder/little_endian.h>
-#include "../includes/net-hook.h"
-#include "../includes/sentinel.h"
+#include "includes/net-hook.h"
+#include "includes/sentinel.h"
 
 static u16 extract_port(struct iphdr *iph);
 

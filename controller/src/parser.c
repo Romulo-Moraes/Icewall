@@ -1,5 +1,5 @@
-#include "../includes/parser.h"
-#include "../../includes/icewall-ctrl.h"
+#include <parser.h>
+#include <icewall-ctrl.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>

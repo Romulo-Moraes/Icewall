@@ -1,4 +1,4 @@
-#include "../includes/usage.h"
+#include <usage.h>
 #include <stdio.h>
 
 #define SYNTAX(explain) if(explain == true) { printf("Syntax: "); }

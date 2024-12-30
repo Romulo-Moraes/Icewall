@@ -1,8 +1,9 @@
 #ifndef __SENTINEL_GUARD__
 #define __SENTINEL_GUARD__
 
-#include "../includes/rules.h"
-#include "../includes/icewall-ctrl.h"
+#include <icewall-ctrl.h>
+
+#include "rules.h"
 
 void init_sentinel(void);
 struct rule_list_node* get_act_rules(direction dir);

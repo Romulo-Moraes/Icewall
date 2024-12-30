@@ -5,8 +5,8 @@
 #include <linux/ioctl.h>
 #include <linux/inet.h>  
 
-#include "icewall.h"
-#include "rules-types.h"
+#include <icewall.h>
+#include <rules-types.h>
 
 #define INIT_NO_ERR NULL
 #define MEM_FAILURE 12

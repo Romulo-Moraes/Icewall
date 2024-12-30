@@ -10,3 +10,6 @@ set (SOURCE
 )
 
 add_executable(wallctl ${SOURCE})
+
+target_include_directories(wallctl PRIVATE includes)
+target_include_directories(wallctl PRIVATE "../shared")
