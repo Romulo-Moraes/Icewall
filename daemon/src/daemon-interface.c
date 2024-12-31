@@ -9,9 +9,9 @@
 
 static daemon_socket skct;
 
-static error_status make_socket_nonblocking(int sock_fd, char **errmsg);
+static error_status make_socket_nonblocking(int sock_fd, const char **errmsg);
 
-accept_status accept_new_client(int *fd_out, char **errmsg) {
+accept_status accept_new_client(int *fd_out, const char **errmsg) {
   struct sockaddr_un addr;
   socklen_t len = sizeof(addr);
   
@@ -40,21 +40,27 @@ void write_data_to_client(int client_fd) {
   
 }
 
-data_status read_data_from_client(int client_fd, char buffer[512], char **errmsg) {
-  if(recv(client_fd, buffer, MAX_CLIENT_MESSAGE_SZ, 0) < 0){
+data_status read_data_from_client(int client_fd, struct client_request *data, const char **errmsg) {
+  ssize_t data_read;
+  
+  if((data_read = recv(client_fd, data, sizeof(struct client_request), 0)) < 0){
     if (errno != EAGAIN && errno != EWOULDBLOCK){
       *errmsg = strerror(errno);
 
       return DATA_ERR;
     }
-
+    
     return NO_DATA;
+  }
+
+  if (data_read != sizeof(struct client_request)) {
+    return DATA_ERR;
   }
 
   return DATA_AVAILABLE;
 }
 
-error_status create_daemon_interface(char **errmsg) {
+error_status create_daemon_interface(const char **errmsg) {
   struct sockaddr_un addr;
   socklen_t len = sizeof(struct sockaddr_un);
   
@@ -70,10 +76,6 @@ error_status create_daemon_interface(char **errmsg) {
 
     return DAEMON_INTERFACE_ERROR;
   }
-
-  if (make_socket_nonblocking(skct, errmsg) == DAEMON_INTERFACE_ERROR) {
-    return DAEMON_INTERFACE_ERROR;
-  }
   
   if(bind(skct, (struct sockaddr*)&addr, len) < 0){
     *errmsg = strerror(errno);
@@ -82,11 +84,17 @@ error_status create_daemon_interface(char **errmsg) {
   }
 
   chmod(UNIX_SOCKET_PATH, S_IRUSR | S_IWUSR);
+
+  listen(skct, 8);
+
+  if (make_socket_nonblocking(skct, errmsg) == DAEMON_INTERFACE_ERROR) {
+    return DAEMON_INTERFACE_ERROR;
+  }
   
   return DAEMON_INTERFACE_NO_ERROR;
 }
 
-close_interface_status close_daemon_interface(char **errmsg) {
+close_interface_status close_daemon_interface(const char **errmsg) {
   if (unlink(UNIX_SOCKET_PATH) < 0) {
     *errmsg = strerror(errno);
 
@@ -96,8 +104,8 @@ close_interface_status close_daemon_interface(char **errmsg) {
   return CLOSE_OK;
 }
 
-static error_status make_socket_nonblocking(int sock_fd, char **errmsg) {
-  int socket_flags = fcntl(sock_fd, F_GETFD, 0);
+static error_status make_socket_nonblocking(int sock_fd, const char **errmsg) {
+  int socket_flags = fcntl(sock_fd, F_GETFL, 0);
 
   if (socket_flags < 0) {
     *errmsg = strerror(errno);
@@ -107,7 +115,7 @@ static error_status make_socket_nonblocking(int sock_fd, char **errmsg) {
 
   socket_flags |= O_NONBLOCK;
 
-  if (fcntl(sock_fd, F_SETFD, socket_flags) < 0) {
+  if (fcntl(sock_fd, F_SETFL, socket_flags) < 0) {
     *errmsg = strerror(errno);
 
     return DAEMON_INTERFACE_ERROR;
