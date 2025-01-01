@@ -1,6 +1,8 @@
 #ifndef __CLIENTS_GUARD__
 #define __CLIENTS_GUARD__
 
+#include <icewall.h>
+
 #define NEW_CLIENT_MEM_FAILURE 1
 #define NEW_CLIENT_OK 2
 

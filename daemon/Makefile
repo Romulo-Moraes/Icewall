@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS_EXTRA := -Iincludes/
+CFLAGS_EXTRA := -Iincludes/ -I../shared
 
 
 compile:
