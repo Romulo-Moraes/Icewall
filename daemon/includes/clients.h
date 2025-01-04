@@ -9,8 +9,8 @@
 typedef unsigned char new_client_status;
 
 struct client_list_node {
-  int client_fd;
-  struct client_list_node *next;
+    int client_fd;
+    struct client_list_node *next;
 };
 
 new_client_status add_client(int fd, const char **errmsg);

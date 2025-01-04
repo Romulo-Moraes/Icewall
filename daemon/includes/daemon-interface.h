@@ -27,8 +27,8 @@ typedef uint8_t accept_status;
 typedef uint8_t request;
 
 struct client_request {
-  request req;
-  char req_data[512];
+    request req;
+    char req_data[512];
 };
 
 accept_status accept_new_client(int *fd_out, const char **errmsg);
