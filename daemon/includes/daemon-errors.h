@@ -16,5 +16,6 @@
 #define FLAGS_NOT_ALLOWED_ERR "This command doesn't accept flags";
 #define UNEXPECTED_END_OF_COMMAND "The given command ended unexpectedly";
 #define FLAGS_NOT_ALLOWED "This command doesn't allow flags";
+#define CONTROL_COMMANDS_ON_RULES_SOURCE_FILE "This command have no meaning in a source file of rule";
 
 #endif

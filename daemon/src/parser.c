@@ -21,11 +21,15 @@ static parsed_token parse_token(char *token, ip_addr *addr, rule_type *rule, pre
 static parse_command_status parse_single_token(char *rule_section, struct rule_description *rule, rule_type *type_out, const char **errmsg);
 
 
-parse_status parse_command(struct command_token *cmd, const char **msg, struct rule_cmd *rule, struct default_cmd *default_pol, struct rm_cmd *rm, struct dump_cmd *dump) {
+parse_status parse_command(struct command_token *cmd, const char **msg, struct rule_cmd *rule_out, struct default_cmd *default_pol_out, struct rm_cmd *rm_out, struct dump_cmd *dump_out) {
+    struct rule_cmd rule;
+    struct default_cmd default_pol;
+    struct rm_cmd rm;
+    struct dump_cmd dump;
     char *command = cmd->token;
     cmd = cmd->next;
 
-    rule->rule = (struct rule_description) {
+    rule.rule = (struct rule_description) {
         .p_rule = NO_P_RULE,
         .ip_rule = NO_ADDR_RULE,
         .proto_rule = NO_PROTO_RULE
@@ -33,40 +37,47 @@ parse_status parse_command(struct command_token *cmd, const char **msg, struct r
   
 
     if(strcmp(command, "drop") == 0) {
+        rule.rule.act = POLICY_DROP;
 
-        rule->rule.act = POLICY_DROP;
-
-        if (parse_command_direction(&cmd, &rule->dir, msg, &rule->rule.r_flags) == PARSE_ERROR) {
+        if (parse_command_direction(&cmd, &rule.dir, msg, &rule.rule.r_flags) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
         
-        if (parse_rule(&cmd, &rule->rule, msg) == PARSE_ERROR) {
+        if (parse_rule(&cmd, &rule.rule, msg) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
-        if (check_for_remaining_flags(cmd, &rule->rule.r_flags, msg) == PARSE_ERROR) {
+        if (check_for_remaining_flags(cmd, &rule.rule.r_flags, msg) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
+        if (rule_out != NULL) {
+            *rule_out = rule;
+        }
+        
         return RULE_COMMAND;
 
     } else if(strcmp(command, "accept") == 0) {
 
-        rule->rule.act = POLICY_ACCEPT;
+        rule.rule.act = POLICY_ACCEPT;
 
-        if (parse_command_direction(&cmd, &rule->dir, msg, &rule->rule.r_flags) == PARSE_ERROR) {
+        if (parse_command_direction(&cmd, &rule.dir, msg, &rule.rule.r_flags) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
         
-        if (parse_rule(&cmd, &rule->rule, msg) == PARSE_ERROR) {
+        if (parse_rule(&cmd, &rule.rule, msg) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
+        if (rule_out != NULL) {
+            *rule_out = rule;
+        }
+        
         return RULE_COMMAND;
 
     } else if(strcmp(command, "default") == 0) {
 
-        if (parse_command_direction(&cmd, &default_pol->dir, msg, NULL) == PARSE_ERROR) {
+        if (parse_command_direction(&cmd, &default_pol.dir, msg, NULL) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
@@ -74,7 +85,7 @@ parse_status parse_command(struct command_token *cmd, const char **msg, struct r
             return PARSE_ERROR;
         }
 
-        if (parse_default_policy(&cmd, &default_pol->policy, msg) == PARSE_ERROR) {
+        if (parse_default_policy(&cmd, &default_pol.policy, msg) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
@@ -82,15 +93,19 @@ parse_status parse_command(struct command_token *cmd, const char **msg, struct r
             return PARSE_ERROR;
         }
 
+        if (default_pol_out != NULL) {
+            *default_pol_out = default_pol;
+        }
+        
         return DEFAULT_COMMAND;
 
     } else if(strcmp(command, "rm") == 0) {
 
-        if (parse_command_direction(&cmd, &rm->dir, msg, NULL) == PARSE_ERROR) {
+        if (parse_command_direction(&cmd, &rm.dir, msg, NULL) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
-        if (parse_rm_rule_id(&cmd, &rm->id, msg) == PARSE_ERROR) {
+        if (parse_rm_rule_id(&cmd, &rm.id, msg) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
@@ -98,34 +113,46 @@ parse_status parse_command(struct command_token *cmd, const char **msg, struct r
             return PARSE_ERROR;
         }
 
+        if (rm_out != NULL) {
+            *rm_out = rm;
+        }
+        
         return RM_COMMAND;
 
     } else if(strcmp(command, "check") == 0) {
-        rule->rule.act = ONLY_CHECK;
+        rule.rule.act = ONLY_CHECK;
         
-        if (parse_command_direction(&cmd, &rule->dir, msg, &rule->rule.r_flags) == PARSE_ERROR) {
+        if (parse_command_direction(&cmd, &rule.dir, msg, &rule.rule.r_flags) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
-        if (parse_rule(&cmd, &rule->rule, msg) == PARSE_ERROR) {
+        if (parse_rule(&cmd, &rule.rule, msg) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
-        if (check_for_remaining_flags(cmd, &rule->rule.r_flags, msg) == PARSE_ERROR) {
+        if (check_for_remaining_flags(cmd, &rule.rule.r_flags, msg) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
+        if (rule_out != NULL) {
+            *rule_out = rule;
+        }
+        
         return RULE_COMMAND;
 
     } else if(strcmp(command, "dump") == 0) {
-        dump->dir = NO_DIRECTION;
+        dump.dir = NO_DIRECTION;
 
-        if (parse_command_direction(&cmd, &dump->dir, msg, NULL) == PARSE_ERROR) {
+        if (parse_command_direction(&cmd, &dump.dir, msg, NULL) == PARSE_ERROR) {
             return PARSE_ERROR;
         }
 
         if (check_for_remaining_flags(cmd, NULL, msg) == FLAG_CHECK_ERROR) {
             return PARSE_ERROR;
+        }
+
+        if (dump_out != NULL) {
+            *dump_out = dump;
         }
         
         return DUMP_COMMAND;

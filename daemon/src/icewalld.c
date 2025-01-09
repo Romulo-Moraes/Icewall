@@ -1,14 +1,28 @@
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 
 #include <clients.h>
 #include <daemon-interface.h>
+#include <source-file-reader.h>
 
-void receive_data_from_client(int client_fd);
+void handle_client_request(struct client_request request) {
+    switch (request.req) {
+    case DIRECT_RULE_COMMAND:
+        break;
+    case SOURCE_FILE_COMMAND:
+        
+        break;
+    default:
+        break;
+    }
+}
 
 int main(void) {
     const char *errmsg;
+    struct client_request request;
     int client_fd;
+    data_status client_read_status;
     accept_status stt;
     struct client_list_node *client_list;
 
@@ -36,7 +50,16 @@ int main(void) {
         client_list = get_clients();
 
         for (; client_list != NULL; client_list = client_list->next) {
-            receive_data_from_client(client_list->client_fd);
+            client_read_status = read_data_from_client(client_fd, &request, &errmsg);
+
+            switch (client_read_status) {
+            case DATA_AVAILABLE:
+                
+                break;
+            case DATA_ERR:
+                fprintf(stderr, "Error while trying to read from client socket: %s\n", errmsg);
+                break;
+            }
         }
 
         sleep(1);
@@ -45,20 +68,3 @@ int main(void) {
     return 0;
 }
 
-void receive_data_from_client(int client_fd) {
-    const char *errmsg;
-    struct client_request request;
-    data_status stt;
-
-    stt = read_data_from_client(client_fd, &request, &errmsg);
-
-    switch (stt) {
-    case DATA_AVAILABLE:
-
-        break;
-    case DATA_ERR:
-        fprintf(stderr, "Error while trying to read data from client: %s\n",
-                errmsg);
-        break;
-    }
-}
