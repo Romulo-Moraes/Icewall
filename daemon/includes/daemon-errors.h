@@ -18,4 +18,15 @@
 #define FLAGS_NOT_ALLOWED "This command doesn't allow flags";
 #define CONTROL_COMMANDS_ON_RULES_SOURCE_FILE "This command have no meaning in a source file of rule";
 
+#define SOURCE_FILE_RELATED_ERROR 1
+#define PROCESS_RELATED_ERROR 2
+
+struct management_error {
+    unsigned char type;
+    unsigned short line;
+    const char *msg;
+};
+
+char* management_error_to_str(struct management_error err, char *out);
+
 #endif

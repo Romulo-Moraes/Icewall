@@ -10,9 +10,6 @@
 #define TOKENIZE_COMMAND_OK 1
 #define TOKENIZE_COMMAND_ERROR 0
 
-#define SOURCE_FILE_RELATED_ERROR 1
-#define PROCESS_RELATED_ERROR 2
-
 #define MANAGEMENT_OK 1
 #define MANAGEMENT_ERROR 0
 
@@ -33,12 +30,6 @@ struct default_pol_storage {
 struct rule_list {
     struct rule_cmd rule;
     struct rule_list *next;
-};
-
-struct management_error {
-    unsigned char type;
-    size_t line;
-    const char *msg;
 };
 
 management_status manage_direct_rule(char *command);

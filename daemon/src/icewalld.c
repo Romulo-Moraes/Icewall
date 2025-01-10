@@ -1,3 +1,5 @@
+#include "daemon-errors.h"
+#include "rules-manager.h"
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -6,11 +8,28 @@
 #include <daemon-interface.h>
 #include <source-file-reader.h>
 
-void handle_client_request(struct client_request request) {
+void handle_client_request(struct client_request request, int client_fd) {
+    struct management_error err;
+    management_status stt;
+    struct rule_list *list;
+    struct default_pol_storage *incoming;
+    struct default_pol_storage *outgoing;
+    char error_message[512];
+    
     switch (request.req) {
     case DIRECT_RULE_COMMAND:
         break;
     case SOURCE_FILE_COMMAND:
+        
+        stt = manage_source_file(request.req_data, &err);
+
+        if (stt == MANAGEMENT_OK) {
+            get_rules_and_directions(&list, incoming, outgoing);
+
+            // send to kernel...
+        } else {
+            send_error_message(client_fd, management_error_to_str(err, error_message));
+        }
         
         break;
     default:
@@ -54,7 +73,7 @@ int main(void) {
 
             switch (client_read_status) {
             case DATA_AVAILABLE:
-                
+                handle_client_request(request, client_list->client_fd);
                 break;
             case DATA_ERR:
                 fprintf(stderr, "Error while trying to read from client socket: %s\n", errmsg);
