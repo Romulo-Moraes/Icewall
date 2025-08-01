@@ -52,7 +52,7 @@ The software is divided into two binaries, the kernel module and a controller, t
 The icewall build process is relatively easy, a single script can make everything for you. Although easily done, a few steps must be performed before compiling the source code.
 
 ### Dependencies
-The kernel module build process requires the package `linux-headers` to be installed on your machine. The installation process of this package depends on what distribution you are pretending to run the icewall.
+The kernel module build process requires the package `linux-headers` to be installed on your machine. The installation process of this package depends on which distribution you intend to run Icewall on.
 
 ```sh
 # Arch Linux based distributions
