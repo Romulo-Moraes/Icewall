@@ -70,10 +70,9 @@ If you have Git installed on your machine, the following command should do the t
 git clone https://github.com/Romulo-Moraes/icewall.git
 ```
 
-If you don't, you can download the zip file directly on the `code` button above the source tree.
-
+If you don’t, you can download the ZIP file directly using the `Code` button above the source tree.
 ### Setting up the CMake build system
-The icewall project uses the CMake exclusively to build the controller program. If you don't have it installed on your machine, search on web how to install it on your distribution.
+The Icewall project uses CMake exclusively to build the controller program. If you don’t have it installed, search online for instructions on installing it for your distribution.
 
 ```sh
 # Arch Linux based distributions
